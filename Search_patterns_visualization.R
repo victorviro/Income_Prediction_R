@@ -14,6 +14,8 @@ Correlation_Matrix <- ggcorrplot(corr, p.mat = cor_pmat(numerical),
                                 color = c("#FC4E07", "white", "#00AFBB"),
                                 outline.col = "white", lab = TRUE , title='Correlation matrix')
 Correlation_Matrix
+Correlation_Matrix_plotly <- ggplotly(Correlation_Matrix)
+Correlation_Matrix_plotly
 
 # We can use data visualization tools to see the relationship between categorical and numerical variables
 
