@@ -93,3 +93,22 @@ data_test = data[test,]
 # We convert cateforical variables in class character
 cols = names(data)[sapply(data, class) == 'character']
 data[,(cols) := lapply(.SD, as.factor), .SDcols = cols]
+
+
+
+# we create a function to graph a curve ROC. This function we will use in next scripts
+library(pROC)
+library(ggplot2)
+library(grid)
+Curve_ROC = function(roc, name, color){
+  auc = round(auc(roc), digits=5)
+  my_text = paste('Area under the curve:',as.character(auc))
+  roc_plot = ggroc(roc, col= color, cex.lab = 1.5, cex.axis = 1.5, main = "")
+  dev.off()
+  my_grob = grid.text(my_text, x=0.6,  y=0.05, gp=gpar(col="black", fontsize=14, fontface="bold"))
+  roc_plot = roc_plot +
+    geom_abline(slope = 1, intercept = 1, linetype = 'dashed', size = 1)+
+    labs(title="Curve Roc", subtitle= name)+
+    annotation_custom(my_grob)
+  roc_plot
+}
