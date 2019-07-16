@@ -21,14 +21,16 @@ Correlation_Matrix
 barplot1 <- ggplot(data, aes(Marital_status)) +
   geom_bar(aes(fill = Income)) + ggtitle("Barplot Marital_status-Income")
 barplot1
-
+library(plotly)
+barplot1_plotly <- ggplotly(barplot1)
+barplot1_plotly
 
 # We graph a scatterplot where we can see relationship between variables Income, Benefits and Age
 scatterplot1 <- ggplot(data, aes(x=Benefits, y= Age, color=Income))+
   geom_point() + ggtitle("Scatterplot") 
-  
 scatterplot1
-
+scatterplot1_plotly <- ggplotly(scatterplot1)
+scatterplot1_plotly
 
 
 
