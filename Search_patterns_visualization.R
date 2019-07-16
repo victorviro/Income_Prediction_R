@@ -3,6 +3,7 @@
 ##############################
 
 library(ggplot2)
+library(plotly)
 
 # We get the correlation matrix of numerical variables.  We create a plot to see it visually
 numerical <- data[, c('Age', 'Education_Num', 'Hours_Per_Week', 'Benefits')]
