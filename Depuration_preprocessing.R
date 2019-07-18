@@ -96,7 +96,21 @@ data[,(cols) := lapply(.SD, as.factor), .SDcols = cols]
 
 
 
-# we create a function to graph a curve ROC. This function we will use in next scripts
+
+
+
+
+
+
+
+
+
+
+
+
+
+### We are going to add any functions which we will use in the next scripts:
+# we create a function to graph a curve ROC with title and colour
 library(pROC)
 library(ggplot2)
 library(grid)
@@ -111,4 +125,42 @@ Curve_ROC = function(roc, name, color){
     labs(title="Curve Roc", subtitle= name)+
     annotation_custom(my_grob)
   roc_plot
+}
+
+
+
+# we create a function to visualize indicators of the model(accuracy,..) for different
+#values of threshold using objects roc
+
+thresold_plot = function(roc){
+  accuracy = (roc$specificities + roc$sensitivities)/2
+  dataframe = data.frame(accuracy=accuracy, specificity=roc$specificities,
+                         threshold=roc$thresholds, sensitivity=roc$sensitivities)
+  plot = ggplot(dataframe,  aes(x=threshold, y= specificity, color='specificity'), size=1) + geom_line() +
+    geom_line(aes(y= sensitivity, color='sensitivity')) +
+    geom_line(aes(y= accuracy, color='accuracy')) +
+    labs(title="Plot values threshold ", y="accuracy", x="threshold")
+  plot
+}
+
+
+
+# we create a function to create a indicator table of the model(accuracy,..) for different
+# values of threshold using objects roc
+threshold_table = function(list_threshold, prob_test){
+  #indicators_test['threshold']=0.5
+  for (i in list_threshold){
+    pred_test_threshold = ifelse(prob_test > i ,'>50K' , "<=50K")
+    cf_test_threshold = caret::confusionMatrix(as.factor(pred_test_threshold), data[test,]$Income)
+    indicators_test_threshold = c(cf_test_threshold$overall[1:1],cf_test_threshold$byClass[c(1,2)])
+    indicators_test_threshold['threshold']=i
+    if(which(list_threshold==i)[[1]]>1){
+      indicators_test=rbind(indicators_test, indicators_test_threshold)
+    }
+    else{
+      indicators_test = indicators_test_threshold
+    }
+  }
+  rownames(indicators_test) = 1:nrow(indicators_test)
+  indicators_test
 }
