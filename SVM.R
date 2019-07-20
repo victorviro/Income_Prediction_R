@@ -1,8 +1,6 @@
 ##############################
 # SVM
 ##############################
-# http://uc-r.github.io/svm
-#https://dataaspirant.com/2017/01/19/support-vector-machine-classifier-implementation-r-caret-package/
 
 # See previously script depuration_preprocessing to get cleaned dataset and selection model script
 
